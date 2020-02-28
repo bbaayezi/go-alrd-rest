@@ -18,7 +18,7 @@ type Latest struct {
 type Overview struct {
 	Publications   int    `gorm:"publications" json:"publications"`
 	Authors        int    `gorm:"authors" json:"authors"`
-	TotalCitations int    `gorm:"total_citations" json:"catations"`
+	TotalCitations int    `gorm:"total_citations" json:"citations"`
 	StartYear      string `gorm:"start_year" json:"startYear"`
 	EndYear        string `gorm:"end_year" json:"endYear"`
 }

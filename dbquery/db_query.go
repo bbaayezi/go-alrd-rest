@@ -24,6 +24,7 @@ var (
 	GetYearlySummary = `select left(date, 4) as year, count(title)
 		from t_abstract_data
 		group by year
+		order by year desc
 		limit 6;
 	`
 	GetPartnerCountry = `select distinct country as country, count(country) as number
@@ -39,7 +40,8 @@ var (
 			from t_abstract_data
 		) t
 		group by keywords
-		limit 20;
+		order by number desc
+		limit 50;
 	`
 	GetPublisher = `select publisher, count(publisher) as number
 		from (
@@ -48,10 +50,12 @@ var (
 		) t
 		where publisher != ''
 		group by publisher
+		order by number desc
 		limit 10;
 	`
 	GetContentType = `select content_type, count(content_type) as number
 		from t_abstract_data
-		group by content_type;
+		group by content_type
+		order by number desc;
 	`
 )
