@@ -43,6 +43,20 @@ var (
 		order by number desc
 		limit 50;
 	`
+	GetAuthKeywords = `select distinct keywords as keywords, count(keywords) as number
+		from (
+			select (
+				upper(
+					regexp_replace(unnest(author_keyword), ' \(.*\)', '', 'g') -- exclude abbr
+				)
+			) as keywords
+
+			from t_abstract_data
+		) t
+		group by keywords
+		order by number desc
+		limit 50;
+	`
 	GetPublisher = `select publisher, count(publisher) as number
 		from (
 			select publisher as publisher
@@ -50,6 +64,16 @@ var (
 		) t
 		where publisher != ''
 		group by publisher
+		order by number desc
+		limit 10;
+	`
+	GetPublicationName = `select publication_name, count(publication_name) as number
+		from (
+			select publication_name as publication_name
+				from t_abstract_data
+		) t
+		where publication_name != ''
+		group by publication_name
 		order by number desc
 		limit 10;
 	`

@@ -34,6 +34,8 @@ func main() {
 	r.GET("/keywords", handler.GetKeywords(db))
 	r.GET("/publisher", handler.GetPublisher(db))
 	r.GET("/contentType", handler.GetContentType(db))
+	r.GET("/authKeywords", handler.GetAuthKeywords(db))
+	r.GET("/publicationName", handler.GetPublicationName(db))
 
 	r.Run()
 }

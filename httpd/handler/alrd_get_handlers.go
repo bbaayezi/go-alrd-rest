@@ -126,9 +126,46 @@ func GetKeywords(db *gorm.DB) gin.HandlerFunc {
 	}
 }
 
+func GetAuthKeywords(db *gorm.DB) gin.HandlerFunc {
+	result := map[string]int{}
+	err := GetNumberedMap(db, dbquery.GetAuthKeywords, result)
+	return func(c *gin.Context) {
+		if err == nil {
+			// TODO: wash data
+			c.JSON(http.StatusOK, gin.H{
+				"status": "ok",
+				"data":   result,
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": "internal server error",
+				"data":   err,
+			})
+		}
+	}
+}
+
 func GetPublisher(db *gorm.DB) gin.HandlerFunc {
 	result := map[string]int{}
 	err := GetNumberedMap(db, dbquery.GetPublisher, result)
+	return func(c *gin.Context) {
+		if err == nil {
+			c.JSON(http.StatusOK, gin.H{
+				"status": "ok",
+				"data":   result,
+			})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"status": "internal server error",
+				"data":   err,
+			})
+		}
+	}
+}
+
+func GetPublicationName(db *gorm.DB) gin.HandlerFunc {
+	result := map[string]int{}
+	err := GetNumberedMap(db, dbquery.GetPublicationName, result)
 	return func(c *gin.Context) {
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
