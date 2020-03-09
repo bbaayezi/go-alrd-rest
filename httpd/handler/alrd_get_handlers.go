@@ -24,40 +24,36 @@ type Overview struct {
 }
 
 func GetLatest(db *gorm.DB) gin.HandlerFunc {
-	var err error
-	latestPapers := []Latest{}
-	latestRows, err := db.Raw(dbquery.GetLatestPublications).Rows()
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		defer latestRows.Close()
-		for latestRows.Next() {
-			// scan to an latest object
-			latest := Latest{}
-			db.ScanRows(latestRows, &latest)
-			latestPapers = append(latestPapers, latest)
-		}
-	}
-
 	return func(c *gin.Context) {
-		if err == nil {
-			c.JSON(http.StatusOK, gin.H{
-				"status": "ok",
-				"data":   latestPapers,
-			})
-		} else {
+		var err error
+		latestPapers := []Latest{}
+		latestRows, err := db.Raw(dbquery.GetLatestPublications).Rows()
+		if err != nil {
+			fmt.Println(err)
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"status": "internal server error",
 				"data":   err,
+			})
+		} else {
+			defer latestRows.Close()
+			for latestRows.Next() {
+				// scan to an latest object
+				latest := Latest{}
+				db.ScanRows(latestRows, &latest)
+				latestPapers = append(latestPapers, latest)
+			}
+			c.JSON(http.StatusOK, gin.H{
+				"status": "ok",
+				"data":   latestPapers,
 			})
 		}
 	}
 }
 
 func GetOverview(db *gorm.DB) gin.HandlerFunc {
-	var overview Overview
-	err := db.Raw(dbquery.GetOverview).Scan(&overview).Error
 	return func(c *gin.Context) {
+		var overview Overview
+		err := db.Raw(dbquery.GetOverview).Scan(&overview).Error
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -73,9 +69,9 @@ func GetOverview(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetYearlySummary(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetYearlySummary, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetYearlySummary, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -91,9 +87,9 @@ func GetYearlySummary(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetPartnerCountry(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetPartnerCountry, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetPartnerCountry, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -109,9 +105,9 @@ func GetPartnerCountry(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetKeywords(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetKeywords, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetKeywords, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -127,9 +123,9 @@ func GetKeywords(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetAuthKeywords(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetAuthKeywords, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetAuthKeywords, result)
 		if err == nil {
 			// TODO: wash data
 			c.JSON(http.StatusOK, gin.H{
@@ -146,9 +142,9 @@ func GetAuthKeywords(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetPublisher(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetPublisher, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetPublisher, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -164,9 +160,9 @@ func GetPublisher(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetPublicationName(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetPublicationName, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetPublicationName, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
@@ -182,9 +178,9 @@ func GetPublicationName(db *gorm.DB) gin.HandlerFunc {
 }
 
 func GetContentType(db *gorm.DB) gin.HandlerFunc {
-	result := map[string]int{}
-	err := GetNumberedMap(db, dbquery.GetContentType, result)
 	return func(c *gin.Context) {
+		result := map[string]int{}
+		err := GetNumberedMap(db, dbquery.GetContentType, result)
 		if err == nil {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
