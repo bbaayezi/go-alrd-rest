@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"go-alrd-rest/httpd/handler"
-	"go-alrd-rest/secret"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
@@ -14,7 +14,15 @@ var db *gorm.DB
 
 func main() {
 	// DB connection
-	db, err := gorm.Open("postgres", secret.DBString)
+	dbHost := os.Getenv("ALRD_DB_HOST")
+	dbPort := os.Getenv("ALRD_DB_PORT")
+	dbUser := os.Getenv("ALRD_DB_USER")
+	dbName := os.Getenv("ALRD_DB_NAME")
+	dbPassword := os.Getenv("ALRD_DB_PASSWORD")
+	dbSSLMode := os.Getenv("ALRD_DB_SSLMODE")
+	db, err := gorm.Open("postgres",
+		fmt.Sprintf("host=%s port=%s user=%s dbname=%s password=%s sslmode=%s",
+			dbHost, dbPort, dbUser, dbName, dbPassword, dbSSLMode))
 	if err != nil {
 		// log.Fatal(err)
 		fmt.Println("---- Error connecting database: ", err, ", returning")
